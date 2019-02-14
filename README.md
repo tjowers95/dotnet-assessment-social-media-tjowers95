@@ -206,7 +206,8 @@ Checks whether or not a given username is available.
 'boolean'
 ```
 
-~~### `GET     users`~~ *Implemented in skeleton*
+### `GET     users` 
+#### *Implemented in skeleton*
 Retrieves all active (non-deleted) users as an array.
 
 #### Response
@@ -214,7 +215,8 @@ Retrieves all active (non-deleted) users as an array.
 ['User']
 ```
 
-~~### `POST    users`~~ *Implemented in skeleton*
+### `POST    users` 
+#### *Implemented in skeleton*
 Creates a new user. If any required fields are missing or the `username` provided is already taken, an error should be sent in lieu of a response.
 
 If the given credentials match a previously-deleted user, re-activate the deleted user instead of creating a new one.
@@ -232,7 +234,8 @@ If the given credentials match a previously-deleted user, re-activate the delete
 'User'
 ```
 
-~~### `GET     users/@{username}`~~ *Implemented in skeleton*
+### `GET     users/@{username}`
+#### *Implemented in skeleton*
 Retrieves a user with the given username. If no such user exists or is deleted, an error should be sent in lieu of a response.
 
 #### Response
@@ -257,7 +260,8 @@ Updates the profile of a user with the given username. If no such user exists, t
 'User'
 ```
 
-~~### `DELETE  users/@{username}`~~ *Implemented in skeleton*
+### `DELETE  users/@{username}`
+#### *Implemented in skeleton*
 "Deletes" a user with the given username. If no such user exists or the provided credentials do not match the user, an error should be sent in lieu of a response. If a user is successfully "deleted", the response should contain the user data prior to deletion.
 
 **IMPORTANT:** This action should not actually drop any records from the database! Instead, develop a way to keep track of "deleted" users so that if a user is re-activated, all of their tweets and information are restored.
