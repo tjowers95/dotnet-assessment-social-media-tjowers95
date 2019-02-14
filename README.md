@@ -4,9 +4,9 @@
 
 For this assessment, you are tasked with implementing a RESTful API using .NET Core Web API, Entity Framework Core, and Postgresql. Specifically, you will be implementing an API that exposes operations for social media data that resembles the conceptual model of Twitter.
 
-You will implement this API on top of an existing skeleton that contains four `User` endpoints which have been created for you from controller to entity. The skeleton contains a system for error handling with examples, mapping entities to DTO's using [AutoMapper](https://automapper.readthedocs.io/en/latest/), and [Swagger/Swashbuckle](https://docs.microsoft.com/en-us/aspnet/core/tutorials/getting-started-with-swashbuckle?view=aspnetcore-2.2&tabs=visual-studio).
+You will implement this API on top of an existing skeleton that contains four `User` endpoints which have been created for you. This example portion that has been implemented showcases the system for error handling with examples, mapping entities to DTO's using [AutoMapper](https://automapper.readthedocs.io/en/latest/), utilizes the create-drop API to allow for faster turn-around while developing your models, and a seeding system for generating data using those models.  The skeleton also has [Swagger/Swashbuckle](https://docs.microsoft.com/en-us/aspnet/core/tutorials/getting-started-with-swashbuckle?view=aspnetcore-2.2&tabs=visual-studio) configured and is accessible at `http://<host>:<port>/api`.
 
-For the remaining requirements, working from a series of endpoint specifications (found at the end of this document) to develop a mental model of the data. You will develop a suitable database schema and write .NET Web API services and controllers to handle requests, perform validation and business logic, and to transform data between the API and database models.
+For the remaining requirements, you will be working from a series of endpoint specifications (found at the end of this document) to develop a mental model of the data. You will develop a suitable database schema and write .NET Web API controllers and services to handle requests, perform validation and business logic, and transform data between the API and database models.
 
 ## Reading these Requirements
 
