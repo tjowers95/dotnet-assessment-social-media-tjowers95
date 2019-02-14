@@ -4,7 +4,9 @@
 
 For this assessment, you are tasked with implementing a RESTful API using .NET Core Web API, Entity Framework Core, and Postgresql. Specifically, you will be implementing an API that exposes operations for social media data that resembles the conceptual model of Twitter.
 
-You will implement this API from scratch, working from a series of endpoint specifications (found at the end of this document) to develop a mental model of the data. You will develop a suitable database schema and write .NET Web API services and controllers to handle requests, perform validation and business logic, and to transform data between the API and database models.
+You will implement this API on top of an existing skeleton that contains four `User` endpoints which have been created for you. This example portion that has been implemented showcases the system for error handling with examples, mapping entities to DTO's using [AutoMapper](https://automapper.readthedocs.io/en/latest/), utilizes the create-drop API to allow for faster turn-around while developing your models, and a seeding system for generating data using those models.  The skeleton also has [Swagger/Swashbuckle](https://docs.microsoft.com/en-us/aspnet/core/tutorials/getting-started-with-swashbuckle?view=aspnetcore-2.2&tabs=visual-studio) configured and is accessible at `http://<host>:<port>/api`.
+
+For the remaining requirements, you will be working from a series of endpoint specifications (found at the end of this document) to develop a mental model of the data. You will develop a suitable database schema and write .NET Web API controllers and services to handle requests, perform validation and business logic, and transform data between the API and database models.
 
 ## Reading these Requirements
 
@@ -204,7 +206,8 @@ Checks whether or not a given username is available.
 'boolean'
 ```
 
-### `GET     users`
+### `GET     users` 
+#### *Implemented in skeleton*
 Retrieves all active (non-deleted) users as an array.
 
 #### Response
@@ -212,7 +215,8 @@ Retrieves all active (non-deleted) users as an array.
 ['User']
 ```
 
-### `POST    users`
+### `POST    users` 
+#### *Implemented in skeleton*
 Creates a new user. If any required fields are missing or the `username` provided is already taken, an error should be sent in lieu of a response.
 
 If the given credentials match a previously-deleted user, re-activate the deleted user instead of creating a new one.
@@ -231,6 +235,7 @@ If the given credentials match a previously-deleted user, re-activate the delete
 ```
 
 ### `GET     users/@{username}`
+#### *Implemented in skeleton*
 Retrieves a user with the given username. If no such user exists or is deleted, an error should be sent in lieu of a response.
 
 #### Response
@@ -256,6 +261,7 @@ Updates the profile of a user with the given username. If no such user exists, t
 ```
 
 ### `DELETE  users/@{username}`
+#### *Implemented in skeleton*
 "Deletes" a user with the given username. If no such user exists or the provided credentials do not match the user, an error should be sent in lieu of a response. If a user is successfully "deleted", the response should contain the user data prior to deletion.
 
 **IMPORTANT:** This action should not actually drop any records from the database! Instead, develop a way to keep track of "deleted" users so that if a user is re-activated, all of their tweets and information are restored.
