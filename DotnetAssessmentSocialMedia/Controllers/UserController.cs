@@ -53,7 +53,8 @@ namespace DotnetAssessmentSocialMedia.Controllers
         public ActionResult<UserResponseDto> Post([FromBody] CreateUserDto userDto)
         {
             var user = _mapper.Map<User>(userDto);
-            return _mapper.Map<UserResponseDto>(_userService.CreateUser(user));
+            var persistedUser = _userService.CreateUser(user);
+            return _mapper.Map<UserResponseDto>(persistedUser);
         }
 
         // DELETE api/users/@{username}
