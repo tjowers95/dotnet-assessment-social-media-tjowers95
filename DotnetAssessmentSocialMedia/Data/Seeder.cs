@@ -6,12 +6,10 @@ namespace DotnetAssessmentSocialMedia.Data
 {
     public class Seeder
     {
-        private SocialMediaContext _context;
         private IUserService _userService;
 
-        public Seeder(SocialMediaContext context, IUserService userService)
+        public Seeder(IUserService userService)
         {
-            _context = context;
             _userService = userService;
         }
 
@@ -62,19 +60,19 @@ namespace DotnetAssessmentSocialMedia.Data
             Random r = new Random();
             string[] consonants = { "b", "c", "d", "f", "g", "h", "j", "k", "l", "m", "l", "n", "p", "q", "r", "s", "sh", "zh", "t", "v", "w", "x" };
             string[] vowels = { "a", "e", "i", "o", "u", "ae", "y" };
-            string Name = "";
-            Name += consonants[r.Next(consonants.Length)].ToUpper();
-            Name += vowels[r.Next(vowels.Length)];
+            string name = "";
+            name += consonants[r.Next(consonants.Length)].ToUpper();
+            name += vowels[r.Next(vowels.Length)];
             int b = 2; //b tells how many times a new letter has been added. It's 2 right now because the first two letters are already in the name.
             while (b < len)
             {
-                Name += consonants[r.Next(consonants.Length)];
+                name += consonants[r.Next(consonants.Length)];
                 b++;
-                Name += vowels[r.Next(vowels.Length)];
+                name += vowels[r.Next(vowels.Length)];
                 b++;
             }
 
-            return Name;
+            return name;
         }
         
         private static int GenerateInt(int min, int max)

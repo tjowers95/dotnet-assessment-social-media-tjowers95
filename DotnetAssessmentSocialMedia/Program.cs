@@ -12,6 +12,8 @@ namespace DotnetAssessmentSocialMedia
         {
 
             var host = CreateWebHostBuilder(args);
+            
+            // Drop/Create database and populate with seed data
             using (var scope = host.Services.CreateScope())
             {
                 var services = scope.ServiceProvider;
@@ -22,7 +24,7 @@ namespace DotnetAssessmentSocialMedia
                     context.Database.EnsureDeleted();
                     context.Database.EnsureCreated();
 
-                    var seeder = scope.ServiceProvider.GetService<Seeder>();
+                    var seeder = services.GetService<Seeder>();
                     seeder.Seed();
                 }
                 catch (System.Exception ex)
@@ -32,9 +34,10 @@ namespace DotnetAssessmentSocialMedia
                     logger.LogError(ex, "An error occurred seeding the DB.");
                 }
             }
+            
             host.Run();
         }
-
+        
         public static IWebHost CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()

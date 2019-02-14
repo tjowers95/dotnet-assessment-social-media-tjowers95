@@ -26,16 +26,23 @@ namespace DotnetAssessmentSocialMedia
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            
+            // Automapper
             services.AddAutoMapper();
+            
+            // Configure swagger doc generation
             services.AddSwaggerGen(c =>
                 {
                     c.SwaggerDoc("v1", new Info {Title = "SocialMedia", Version = "v1"}); 
                 });
+            
+            // Configure EF Core DbContext
             services.AddEntityFrameworkNpgsql()
                 .AddDbContext<SocialMediaContext>(
                     options => options.UseNpgsql(Configuration.GetConnectionString("SocialMediaDatabase")))
                 .BuildServiceProvider();
 
+            // Add dependencies to IoC container
             services.AddTransient<IUserService, UserService>();
 
             // Seeder used in Program.cs for development
@@ -55,13 +62,16 @@ namespace DotnetAssessmentSocialMedia
             }
 
             app.UseHttpsRedirection();
+            
             app.UseMiddleware<ExceptionMiddleware>();
+            
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "SocialMedia v1");
                 c.RoutePrefix = "api";
             });
+            
             app.UseMvc();
         }
     }

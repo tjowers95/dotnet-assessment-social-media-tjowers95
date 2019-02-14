@@ -6,8 +6,6 @@ namespace DotnetAssessmentSocialMedia.Data
     public class SocialMediaContext : DbContext
     {
         public DbSet<User> Users { get; set; }
-        public DbSet<Credentials> Credentials { get; set; }
-        public DbSet<Profile> Profiles { get; set; }
         
         public SocialMediaContext(DbContextOptions<SocialMediaContext> options)
             : base(options) 

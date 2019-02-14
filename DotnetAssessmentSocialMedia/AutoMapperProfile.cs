@@ -12,8 +12,11 @@ namespace DotnetAssessmentSocialMedia
                 .ForMember(dest => dest.Id, opts => opts.Ignore())
                 .ForMember(dest => dest.Joined, opts => opts.Ignore())
                 .ForMember(dest => dest.Deleted, opts => opts.Ignore());
+            
             CreateMap<Credentials, CredentialsDto>();
+            
             CreateMap<Profile, ProfileDto>();
+            
             CreateMap<User, UserResponseDto>()
                 .ForMember(
                     dest => dest.Username,
