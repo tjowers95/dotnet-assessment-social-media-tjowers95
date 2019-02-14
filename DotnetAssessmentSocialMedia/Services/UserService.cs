@@ -60,7 +60,14 @@ namespace DotnetAssessmentSocialMedia.Services
             {
                 if (e.InnerException.Message.Contains("unique constraint")) // hmm
                 {
-                    throw new UsernameTakenException();
+                    var existingUser = _context.Users
+                        .FirstOrDefault(u => u.Credentials.Username == user.Credentials.Username);
+                    if (existingUser != null)
+                    {
+                        existingUser.Deleted = false;
+                        _context.Update(existingUser);
+                        return existingUser;
+                    }
                 }
             }
 

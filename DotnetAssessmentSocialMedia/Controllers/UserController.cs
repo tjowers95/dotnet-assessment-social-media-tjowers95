@@ -44,7 +44,7 @@ namespace DotnetAssessmentSocialMedia.Controllers
         public ActionResult<UserResponseDto> Get(string username)
         {
             var user = _userService.GetByUsername(username);
-            return _mapper.Map<User, UserResponseDto>(user);
+            return _mapper.Map<UserResponseDto>(user);
         }
 
         // POST api/users
