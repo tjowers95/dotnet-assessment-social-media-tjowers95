@@ -28,7 +28,6 @@ namespace DotnetAssessmentSocialMedia.Controllers
         
         // GET api/users
         [HttpGet]
-        [ProducesResponseType(404)]
         public ActionResult<IEnumerable<UserResponseDto>> Get()
         {
             var result = _userService.GetAll();
@@ -40,7 +39,6 @@ namespace DotnetAssessmentSocialMedia.Controllers
 
         // GET api/users/@{username}
         [HttpGet("@{username}")]
-        [ProducesResponseType(404)]
         public ActionResult<UserResponseDto> Get(string username)
         {
             var user = _userService.GetByUsername(username);
@@ -66,5 +64,39 @@ namespace DotnetAssessmentSocialMedia.Controllers
             var credentials = _mapper.Map<CredentialsDto>(credentialsDto);
             return _mapper.Map<UserResponseDto>(_userService.DeleteUser(username, credentials));
         }
-    }
+
+        // GET validate/username/Available/@{username}
+        [HttpGet("validate/username/exists/@{username}")]
+        public ActionResult<bool> GetUsernameAvailable(string username)
+        {
+            var users = _userService.GetAll();
+
+            foreach (var u in users)
+            {
+                if (u.Credentials.Username.Equals(username))
+                {
+                    return Ok(false);
+                }
+            }
+
+            return Ok(true);
+        }
+
+        // PATCH users/@{username}
+        [HttpPatch("users/@{username}")]
+        public void PatchRenameUser(string username)
+        {
+
+        }
+
+        // POST users/@{username}/follow
+        [HttpPost("users/@{username}/follow")]
+        public void PostFollow(string username, [FromBody] CredentialsDto credentials) { }
+
+        // POST users/@{username}/unfollow
+        [HttpPost("users/@{username}/unfollow")]
+        public void PostUnfollow(string username, [FromBody] CredentialsDto credentials) { }
+
+        // GET user/@{username}/feed   check param
+        public void PostFollow(string username) { }
 }
