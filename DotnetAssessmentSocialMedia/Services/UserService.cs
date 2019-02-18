@@ -99,7 +99,7 @@ namespace DotnetAssessmentSocialMedia.Services
             return user;
         }
 
-        public User EditUser(string username, ProfileDto profile, CredentialsDto credentials)
+        public User EditUser(string username, CreateUserDto info)
         {
             var user = _context.Users
                 .SingleOrDefault(u => u.Credentials.Username == username && !u.Deleted);
@@ -107,13 +107,13 @@ namespace DotnetAssessmentSocialMedia.Services
             if (user == null)
                 throw new UserNotFoundException();
 
-            if (user.Credentials.Username != credentials.Username || user.Credentials.Password != credentials.Password)
+            if (user.Credentials.Username != info.Credentials.Username || user.Credentials.Password != info.Credentials.Password)
                 throw new InvalidCredentialsException();
 
-            user.Profile.FirstName = profile.FirstName;
-            user.Profile.LastName  = profile.LastName;
-            user.Profile.Phone     = profile.Phone;
-            user.Profile.Email     = profile.Email;
+            user.Profile.FirstName = info.Profile.FirstName;
+            user.Profile.LastName  = info.Profile.LastName;
+            user.Profile.Phone     = info.Profile.Phone;
+            user.Profile.Email     = info.Profile.Email;
 
             _context.Update(user);
             _context.SaveChanges();
@@ -123,24 +123,27 @@ namespace DotnetAssessmentSocialMedia.Services
 
         public void Follow(string username, CredentialsDto credentials)
         {
-            var follower = _context.Users
+            var followee = _context.Users
                 .SingleOrDefault(u => u.Credentials.Username == username && !u.Deleted);
 
-            var followee = _context.Users
+            var follower = _context.Users
                 .SingleOrDefault(u => u.Credentials.Username == credentials.Username && !u.Deleted);
 
             if (followee == null || follower == null)
                 throw new UserNotFoundException();
 
-            if (followee.Credentials.Username != credentials.Username || followee.Credentials.Password != credentials.Password)
+            if (follower.Credentials.Password != credentials.Password)
                 throw new InvalidCredentialsException();
 
             if (!_context.UserFollowJoin.Select(u => u.FolloweeId == followee.Id && u.FollowerId == follower.Id).Any())
             {
-                var userUser = new UserUser(followee.Id, follower.Id);
+                var userUser = new UserUser();
+
+                userUser.Followee = followee;
+                userUser.Follower = follower;
+
                 _context.UserFollowJoin.Add(userUser);
 
-                _context.Update(userUser);
                 _context.SaveChanges();
             }
         }
@@ -171,25 +174,27 @@ namespace DotnetAssessmentSocialMedia.Services
             var userId = _context.Users
                 .SingleOrDefault(u => u.Credentials.Username == username && !u.Deleted).Id;
 
-            var userFeed = _context.UserTweetsJoin
-                .Where(u => u.UserId == userId)
-                .Select(t => t.Tweet)
+            var userFeed = _context.Tweets.Include(t => t.Author)
+                .Where(u => u.Author.Id == userId)
+                .Select(t => t)
                 .ToList();
 
-            var following = _context.UserFollowJoin
+            var following = _context.UserFollowJoin.Include(f => f.Followee)
                 .Where(u => u.FollowerId == userId)
                 .Select(f => f.Followee)
                 .ToList();
 
-            foreach (var i in following)
+            for (int i = 0; i < following.Count; i++)
             {
-                userFeed.AddRange
-                    (
-                      _context.UserTweetsJoin
-                      .Where(u => u.UserId == i.Id)
-                      .Select(t => t.Tweet)
-                      .ToList()
-                    );
+                var j = userFeed.Count - 1;
+                var pointer = userFeed[j];
+
+                if (pointer == null)
+                    pointer = userFeed[j] = new Tweet();
+
+                userFeed[i] = _context.Tweets.Include(t => t.Author)
+                    .Where(t => t.Author.Id == following[i].Id)
+                    .SingleOrDefault();
             }
 
             return userFeed;

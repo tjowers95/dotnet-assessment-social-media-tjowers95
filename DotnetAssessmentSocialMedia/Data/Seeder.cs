@@ -15,24 +15,25 @@ namespace DotnetAssessmentSocialMedia.Data
 
         public void Seed()
         {
-            GenerateUsers(20);
+            GenerateUsers(25);
+
         }
 
         private void GenerateUsers(int count)
         {
             for (var i = 0; i < count; ++i)
             {
-                var firstName = GenerateName(GenerateInt(3, 9));
-                var lastName = GenerateName(GenerateInt(4, 7));
-                var email = $"{firstName.ToLower()[0]}.{lastName.ToLower()}@gmail.com";
-                var password = $"password{GenerateInt(1000, 9999)}";
-                var username = $"{GenerateName(GenerateInt(5, 9))}{GenerateInt(10, 99)}";
+                var firstName = ((char)(i+97)).ToString();
+                var lastName = ((char)(i+97)).ToString();
+                var email = firstName + "@gmail.com";
+                var password = firstName;
+                var username = firstName;
 
                 var addPhoneNumber = GenerateInt(0, 10) % 2 == 0;          
 
                 var credentials = new Credentials
                 {
-                    Username = username,
+                    Username = firstName,
                     Password = password
                 };
 

@@ -30,11 +30,11 @@ namespace DotnetAssessmentSocialMedia
                 catch (System.Exception ex)
                 {
                     var logger = services.GetRequiredService<ILogger<Program>>();
-                    logger.LogDebug(ex.Message);
+                    logger.LogDebug(ex.Message, ex.InnerException, ex.StackTrace);
                     logger.LogError(ex, "An error occurred seeding the DB.");
                 }
             }
-            
+           
             host.Run();
         }
         

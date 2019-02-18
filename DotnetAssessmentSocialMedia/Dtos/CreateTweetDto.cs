@@ -7,6 +7,8 @@ namespace DotnetAssessmentSocialMedia.Dtos
 {
     public class CreateTweetDto
     {
+        public CredentialsDto Credentials { get; set; }
 
+        public string TweetContent { get; set; }
     }
 }

@@ -17,10 +17,5 @@ namespace DotnetAssessmentSocialMedia.Data.Entities
         public int FollowerId { get; set; }
         public User Follower { get; set; }
 
-        public UserUser(int followeeId, int followerId)
-        {
-            this.FolloweeId = followeeId;
-            this.FollowerId = followerId;
-        }
     }
 }

@@ -44,6 +44,16 @@ namespace DotnetAssessmentSocialMedia.Data
 
             userUsers
                 .HasKey(entity => new { entity.FolloweeId, entity.FollowerId });
+
+            var tweetUserLikes = modelBuilder.Entity<TweetUserLikes>();
+
+            tweetUserLikes
+                .HasKey(entity => new { entity.UserId, entity.TweetId });
+
+            var tweetUserMentions = modelBuilder.Entity<TweetUserMentions>();
+
+            tweetUserMentions
+                .HasKey(e => new { e.UserId, e.TweetId });
         }
     }
 }

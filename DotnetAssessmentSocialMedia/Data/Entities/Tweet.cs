@@ -10,6 +10,7 @@ namespace DotnetAssessmentSocialMedia.Data.Entities
     [Table("tweet")]
     public class Tweet
     {
+        [Key]
         [Column("id")]
         public int Id { get; set; }
 
@@ -24,9 +25,6 @@ namespace DotnetAssessmentSocialMedia.Data.Entities
 
         public DateTime Created { get; set; } = DateTime.UtcNow;
 
-        [NotMapped]
-        public Tweet ParentTweet { get; set; }
-
         [ForeignKey("retweet_of_id")]
         public int RetweetOfId { get; set; }
 
@@ -35,8 +33,6 @@ namespace DotnetAssessmentSocialMedia.Data.Entities
 
         [ForeignKey("user_id")]
         public int UserId { get; set; }
-
-        [NotMapped]
         public User Author { get; set; }
     }
 }
