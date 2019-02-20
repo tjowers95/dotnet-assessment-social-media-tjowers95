@@ -135,12 +135,17 @@ namespace DotnetAssessmentSocialMedia.Services
             if (follower.Credentials.Password != credentials.Password)
                 throw new InvalidCredentialsException();
 
-            if (!_context.UserFollowJoin.Select(u => u.FolloweeId == followee.Id && u.FollowerId == follower.Id).Any())
-            {
-                var userUser = new UserUser();
+            bool exists = _context.UserFollowJoin.Where(u => u.FolloweeId == followee.Id && u.FollowerId == follower.Id).Any();
 
-                userUser.Followee = followee;
-                userUser.Follower = follower;
+            if (!exists)
+            {
+                var userUser = new UserUser
+                {
+                    Followee = followee,
+                    FolloweeId = followee.Id,
+                    Follower = follower,
+                    FollowerId = follower.Id
+                };
 
                 _context.UserFollowJoin.Add(userUser);
 
@@ -179,22 +184,18 @@ namespace DotnetAssessmentSocialMedia.Services
                 .Select(t => t)
                 .ToList();
 
-            var following = _context.UserFollowJoin.Include(f => f.Followee)
+            var following = _context.UserFollowJoin.Include(f => f.Followee).ThenInclude(a => a.Credentials.Username)
                 .Where(u => u.FollowerId == userId)
                 .Select(f => f.Followee)
                 .ToList();
 
-            for (int i = 0; i < following.Count; i++)
+            foreach (var i in following)
             {
-                var j = userFeed.Count - 1;
-                var pointer = userFeed[j];
-
-                if (pointer == null)
-                    pointer = userFeed[j] = new Tweet();
-
-                userFeed[i] = _context.Tweets.Include(t => t.Author)
-                    .Where(t => t.Author.Id == following[i].Id)
-                    .SingleOrDefault();
+                userFeed.AddRange(_context.Tweets.Include(t => t.Author).ThenInclude(t => t.Credentials)
+                        .Where(t => t.Author.Id == i.Id)
+                        .Select(t => t)
+                        .ToList()
+                    );
             }
 
             return userFeed;
@@ -202,13 +203,11 @@ namespace DotnetAssessmentSocialMedia.Services
 
         public IEnumerable<Tweet> Tweets(string username)
         {
-            var userId = _context.Users
+            var userId = _context.Users.Include(u => u.Credentials)
                  .SingleOrDefault(u => u.Credentials.Username == username && !u.Deleted).Id;
 
-            var userTweets = _context.UserTweetsJoin
+            var userTweets = _context.Tweets
                 .Where(u => u.UserId == userId)
-                .Select(t => t.Tweet)
-                .Where(t => !t.Deleted)
                 .Select(t => t)
                 .ToList();
 

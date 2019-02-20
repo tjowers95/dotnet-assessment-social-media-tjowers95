@@ -14,6 +14,10 @@ namespace DotnetAssessmentSocialMedia
                 .ForMember(dest => dest.Profile, opt => opt.MapFrom(src => src.Profile))
                 .ForAllOtherMembers(m => m.Ignore());
 
+            CreateMap<Tweet, TweetResponseDto>()
+                .ForMember(dest => dest.TweetContent, opt => opt.MapFrom(src => src.TweetContent))
+                .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.Author.Credentials.Username));
+
             CreateMap<Credentials, CredentialsDto>();
             
             CreateMap<Profile, ProfileDto>();
